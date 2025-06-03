@@ -1,9 +1,9 @@
 const express = require("express")
-const {adminOnly, protect} = require("../middleware/authMiddleware");
-const { getUsers, getUserById } = require("../controller/userController");
+const {protect} = require("../middleware/authMiddleware");
+const { getAllProduct, getProduct } = require("../controller/userController");
 
 const router = express.Router();
 
-router.get('/', protect, adminOnly, getUsers);
-router.get('/:id', protect, getUserById);
+router.get('/', protect, getAllProduct);
+router.get('/:id', protect, getProduct);
 module.exports = router;

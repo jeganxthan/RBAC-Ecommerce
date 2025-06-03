@@ -8,14 +8,17 @@ const generateToken = (userId)=>{
 
 const registerUser = async(req, res)=>{
    try{
-    const {name, email, password, profileImageUrl, adminInviteToken} = req.body;
+    const {name, email, password, profileImageUrl, adminInviteToken, isSeller} = req.body;
     const userExists = await User.findOne({email});
     if(userExists){
         return res.status(400).json({message:"Email already exists"});
     }
-    let role = "member";
+    let role = "user";
     if(adminInviteToken && adminInviteToken == process.env.ADMIN_INVITE_TOKEN){
         role = "admin";
+    }
+    if(isSeller){
+        role = "seller";
     }
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);

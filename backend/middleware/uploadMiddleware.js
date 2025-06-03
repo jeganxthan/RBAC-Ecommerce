@@ -1,20 +1,55 @@
-const multer = require('multer')
+const multer = require('multer');
+const fs = require('fs');
 
-const storage = multer.diskStorage({
-    destination:(req,file,cb)=>{
-        cb(null, 'uploads/');
-    },
-    filename:(req,file,cb)=>{
-        cb(null, `${Date.now()}-${file.originalname}`);
-    }
-})
-const fileFilter = (req, file, cb)=>{
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-    if(allowedTypes.includes(file.mimetype)){
-        cb(null,true);
-    }else{
-        cb(new Error('Only .jpeg, .png, .jpg formats are allowed'))
-    }
-}
-const uploads = multer({storage, fileFilter})
-module.exports = uploads;
+const ensureDirExists = (dir) => {
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+};
+
+const profileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const uploadPath = 'uploads/profile/';
+    ensureDirExists(uploadPath);
+    cb(null, uploadPath);
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  }
+});
+
+const profileUpload = multer({
+  storage: profileStorage,
+  fileFilter: (req, file, cb) => {
+    const allowed = ['image/jpeg', 'image/png', 'image/jpg'];
+    allowed.includes(file.mimetype)
+      ? cb(null, true)
+      : cb(new Error('Only .jpeg, .png, .jpg formats are allowed'));
+  }
+});
+
+const productStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const uploadPath = 'uploads/products/';
+    ensureDirExists(uploadPath);
+    cb(null, uploadPath);
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  }
+});
+
+const productUpload = multer({
+  storage: productStorage,
+  fileFilter: (req, file, cb) => {
+    const allowed = ['image/jpeg', 'image/png', 'image/jpg'];
+    allowed.includes(file.mimetype)
+      ? cb(null, true)
+      : cb(new Error('Only .jpeg, .png, .jpg formats are allowed'));
+  }
+});
+
+module.exports = {
+  profileUpload,
+  productUpload,
+};

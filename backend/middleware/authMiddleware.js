@@ -25,4 +25,12 @@ const adminOnly = (req,res,next)=>{
     }
 }
 
-module.exports={protect, adminOnly};
+const sellerOnly = (req, res, next) => {
+  if (req.user && req.user.role === "seller") {
+    next();
+  } else {
+    res.status(403).json({ message: "Access denied, seller only" });
+  }
+};
+
+module.exports={protect, adminOnly, sellerOnly};
