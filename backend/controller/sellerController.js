@@ -1,29 +1,24 @@
-const Product = require("../models/Product")
+const Product = require("../models/Product");
 const mongoose = require('mongoose');
 
 const getAllProduct = async (req, res) => {
     try {
-        const product = await Product.find().populate('seller',
-            'name email profileImageUrl'
-        )
-        res.json(product);
+        const products = await Product.find();
+        res.json(products);
     } catch (error) {
-        res.status(500).json({ message: 'Server error', error: error.message })
+        res.status(500).json({ message: 'Server error', error: error.message });
     }
-}
+};
 
 const getProduct = async (req, res) => {
     try {
-        const product = await Product.findById(req.params.id)
-            .populate('seller', 'name email profileImageUrl')
-            .populate('ratings.user', 'name profileImageUrl');
-
-        if (!product) return res.status(404).json({ message: "Product not found" })
-        res.json(product)
+        const product = await Product.findById(req.params.id);
+        if (!product) return res.status(404).json({ message: "Product not found" });
+        res.json(product);
     } catch (error) {
-        res.status(500).json({ message: 'Server error', error: error.message })
+        res.status(500).json({ message: 'Server error', error: error.message });
     }
-}
+};
 
 const createProduct = async (req, res) => {
     try {
@@ -33,8 +28,8 @@ const createProduct = async (req, res) => {
             description,
             specs,
             category,
-            stock,
-        } = req.body
+            stock
+        } = req.body;
 
         const images = req.files ? req.files.map(file => `/uploads/products/${file.filename}`) : [];
 
@@ -43,67 +38,82 @@ const createProduct = async (req, res) => {
         }
 
         const product = await Product.create({
-            seller: req.user.id,
+            seller: new mongoose.Types.ObjectId(req.user._id),
             name,
             price,
             images,
             description,
             specs,
             category,
-            stock,
+            stock
         });
-        res.status(201).json({ message: "Product Created Successfully", product })
+
+        res.status(201).json({ message: "Product Created Successfully", product });
     } catch (error) {
-        res.status(500).json({ message: 'Server error', error: error.message })
+        res.status(500).json({ message: 'Server error', error: error.message });
     }
-}
+};
 
 const updateProduct = async (req, res) => {
     try {
         const product = await Product.findById(req.params.id);
         if (!product) return res.status(404).json({ message: "Product not found" });
+
         product.name = req.body.name || product.name;
         product.price = req.body.price || product.price;
-       const newImages = req.files ? req.files.map(file => `/uploads/products/${file.filename}`) : product.images;
+
+        const newImages = req.files ? req.files.map(file => `/uploads/products/${file.filename}`) : product.images;
         product.images = newImages;
+
         product.description = req.body.description || product.description;
         product.specs = req.body.specs || product.specs;
         product.category = req.body.category || product.category;
         product.stock = req.body.stock || product.stock;
+
         const updatedProduct = await product.save();
-        res.json({ message: "Product updated successfully", updatedProduct })
+
+        res.json({ message: "Product updated successfully", updatedProduct });
     } catch (error) {
-        res.status(500).json({ message: 'Server error', error: error.message })
+        res.status(500).json({ message: 'Server error', error: error.message });
     }
-}
+};
 
 const deleteProduct = async (req, res) => {
     try {
         const product = await Product.findById(req.params.id);
-        if (!product) return res.status(404).json({ message: "Product not found" })
-        await product.deleteOne()
-        res.json({ message: "Product deleted successfully" })
+        if (!product) return res.status(404).json({ message: "Product not found" });
+
+        await product.deleteOne();
+        res.json({ message: "Product deleted successfully" });
     } catch (error) {
-        res.status(500).json({ message: 'Server error', error: error.message })
+        res.status(500).json({ message: 'Server error', error: error.message });
     }
-}
+};
 
 const getDashboard = async (req, res) => {
     try {
-        const sellerId = req.user.id;
+        const sellerId = new mongoose.Types.ObjectId(req.user._id);
 
         const totalProduct = await Product.countDocuments({ seller: sellerId });
 
         const sellerProducts = await Product.find({ seller: sellerId })
-            .populate('ratings.user', 'name profileImageUrl');
+            .populate('rating.user', 'name profileImageUrl')
 
-        const allCategories = ['Electronics', 'Furniture', 'Clothing', 'Books', 'Beauty', 'Home Appliances', 'Toys', 'Sports', 'Other'];
+        const allCategories = [
+            'Electronics',
+            'Furniture',
+            'Clothing',
+            'Books',
+            'Beauty',
+            'Home Appliances',
+            'Toys',
+            'Sports',
+            'Other'
+        ];
 
         const categoryCounts = await Product.aggregate([
             {
-                $match: {
-                    seller: new mongoose.Types.ObjectId(sellerId)
-                }
+                $match: { seller: sellerId }
             },
             {
                 $group: {
@@ -147,5 +157,6 @@ module.exports = {
     createProduct,
     updateProduct,
     deleteProduct,
-    getDashboard,
-}; 
+    getDashboard
+};
+

@@ -52,7 +52,8 @@ const productSchema = new mongoose.Schema({
     required: [true, 'Stock is required'],
     min: [0, 'Stock cannot be negative']
   },
-  rating: [ratingSchema]
+  rating: [ratingSchema],
+  seller: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true } 
 }, {
   timestamps: true
 });

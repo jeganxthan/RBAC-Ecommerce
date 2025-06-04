@@ -10,27 +10,30 @@ const {
     getDashboardStats,
     blockUser,
     unblockUser,
-} = require('../controller/adminController');
-const { protect, AdminOnly } = require('../middleware/authMiddleware');
+} = require('../controller/adminController'); 
+
+const { protect, adminOnly } = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
 // Sellers
-router.get("/seller", protect, AdminOnly, getAllSeller);
-router.get("/seller/:id", protect, AdminOnly, getSeller);
-router.put("/seller/block/:id", protect, AdminOnly, blockUser);
-router.put("/seller/unblock/:id", protect, AdminOnly, unblockUser);
+router.get("/seller", protect, adminOnly, getAllSeller);
+router.get("/seller/:id", protect, adminOnly, getSeller);
+router.put("/seller/block/:id", protect, adminOnly, blockUser);
+router.put("/seller/unblock/:id", protect, adminOnly, unblockUser);
 
 // Seller Products
-router.get("/seller-products", protect, AdminOnly, getSellerAllProducts);
-router.get("/seller-products/:id", protect, AdminOnly, getSellerproduct);
+router.get("/seller-products", protect, adminOnly, getSellerAllProducts);
+router.get("/seller-products/:sellerId/:productId", protect, adminOnly, getSellerproduct);
+
 
 // Products
-router.get("/products", protect, AdminOnly, getAllProduct);
-router.get("/products/:id", protect, AdminOnly, getProduct);
-router.delete("/products/:id", protect, AdminOnly, deleteSellerProduct);
+router.get("/products", protect, adminOnly, getAllProduct);
+router.get("/products/:id", protect, adminOnly, getProduct);
+router.delete("/products/:id", protect, adminOnly, deleteSellerProduct);
 
 // Dashboard
-router.get("/", protect, AdminOnly, getDashboardStats);
+router.get("/", protect, adminOnly, getDashboardStats);
 
-module.exports = router;
+module.exports = router; 
+

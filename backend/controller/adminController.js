@@ -13,21 +13,23 @@ const getAllSeller = async (req, res) => {
 
 const getSeller = async (req, res) => {
     try {
-        const seller = await User.findOne({ _id: req.params.id, role: "seller" })
-        if (!seller) return res.status(404).json({ message: "Seller not found" })
         if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
             return res.status(400).json({ message: "Invalid ID" });
         }
-        res.json(seller)
-    } catch (error) {
-        res.status(500).json({ message: 'Server error', error: error.message })
 
+        const seller = await User.findOne({ _id: req.params.id, role: "seller" });
+
+        if (!seller) return res.status(404).json({ message: "Seller not found" });
+
+        res.json(seller);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
     }
-}
+};
 
 const getSellerAllProducts = async (req, res) => {
     try {
-        const sellerId = req.user.id;
+        const sellerId = new mongoose.Types.ObjectId(req.user._id);
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 10;
         const skip = (page - 1) * limit;
@@ -92,18 +94,22 @@ const getSellerAllProducts = async (req, res) => {
 const getSellerproduct = async (req, res) => {
     try {
         const { sellerId, productId } = req.params;
-        const product = await Product.findOne({ _id: productId, seller: sellerId })
-            .populate('seller', 'name email profileImageUrl')
-        if (!product) return res.status(404).json({ message: "Product not found" })
-            if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-    return res.status(400).json({ message: "Invalid ID" });
-}
-        res.status(200).json(product)
-    } catch (error) {
-        res.status(500).json({ message: 'Server error', error: error.message })
 
+        if (!mongoose.Types.ObjectId.isValid(productId) || !mongoose.Types.ObjectId.isValid(sellerId)) {
+            return res.status(400).json({ message: "Invalid ID" });
+        }
+
+        const product = await Product.findOne({ _id: productId, seller: sellerId })
+            .populate('seller', 'name email profileImageUrl');
+
+        if (!product) return res.status(404).json({ message: "Product not found" });
+
+        res.status(200).json(product);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
     }
-}
+};
+
 
 const getAllProduct = async (req, res) => {
     try {
@@ -134,8 +140,6 @@ const getAllProduct = async (req, res) => {
 const getProduct = async (req, res) => {
     try {
         const product = await Product.findById(req.params.id)
-            .populate('seller', 'name email profileImageUrl')
-            .populate('ratings.user', 'name profileImageUrl');
 
         if (!product) return res.status(404).json({ message: "Product not found" })
         res.json(product)
@@ -194,7 +198,6 @@ const getDashboardStats = async (req, res) => {
             User.countDocuments({ role: "admin" }),
             Product.countDocuments({})
         ]);
-        //all
         const allCategories = ['Electronics', 'Furniture', 'Clothing', 'Books', 'Beauty', 'Home Appliances', 'Toys', 'Sports', 'Other'];
 
         const categoryCounts = await Product.aggregate([

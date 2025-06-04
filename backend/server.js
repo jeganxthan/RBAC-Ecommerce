@@ -4,6 +4,7 @@ const path = require("path");
 const connectDB = require("./config/db");
 const authRoutes = require("./Routes/authRoutes");
 const sellerRoutes = require("./Routes/sellerRoutes");
+const adminRoutes = require("./Routes/adminRoutes");
 const userRoutes = require("./Routes/userRoutes");
 const cors = require("cors");
 
@@ -22,6 +23,7 @@ app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/product", sellerRoutes);
+app.use("/api/admin", adminRoutes);
 app.use("/api/users", userRoutes);
 
 app.use(
