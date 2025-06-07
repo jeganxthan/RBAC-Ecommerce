@@ -18,7 +18,7 @@ const Input = ({
         <input type={type==="password" && showPassword ? "text":type} placeholder={placeholder}
         value={value}
         onChange={onChange}
-        className="w-[300px] p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black mt-2"/>
+        className="md:w-[400px] w-[230px] lg:w-[400px] xl1:w-[450px] p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black mt-2 ml:w-[300px]"/>
 
         {type==="password" &&(
             <div className='absolute inset-y-0 right-4 flex items-center cursor-pointer top-2' onClick={toggleShowPassword}>

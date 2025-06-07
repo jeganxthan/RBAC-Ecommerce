@@ -1,25 +1,20 @@
-// tailwind.config.js
-module.exports = {
-  darkMode: 'class',
+/** @type {import('tailwindcss').Config} */
+export default {
   content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {
-      fontFamily: {
-        roboto: ['Roboto', 'sans-serif'],
-        urbanist: ['Urbanist', 'sans-serif'],
-      },
-      animation: {
-        blob: "blob 20s infinite",
-      },
-      keyframes: {
-        blob: {
-          "0%, 100%": { transform: "translate(-50%, -50%) scale(1)" },
-          "33%": { transform: "translate(-48%, -52%) scale(1.1)" },
-          "66%": { transform: "translate(-52%, -48%) scale(0.9)" },
-        },
-      },
+    extend: {},
+     screens: {
+      ms:'375px',
+      sm: '640px',
+      ml:'425px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
+      'xl1': '1440px',
+      '2xl': '1536px',
     },
   },
   plugins: [],

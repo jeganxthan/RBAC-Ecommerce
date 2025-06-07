@@ -35,7 +35,7 @@ const ProfilePhoto = ({image, setImage, preview, setPreview}) => {
             {!image?(
                 <div className='bg-slate-200 w-[80px] h-[80px] rounded-full relative'>
                 <User className='absolute top-5 left-5' size={40}/>
-                <button className='bg-black rounded-full absolute p-2 top-12 left-14'
+                <button className='bg-[#1947a8] rounded-full absolute p-2 top-12 left-14'
                 type='button'
                 onClick={onChooseFile}>
                     <Pen size={20} className='text-white'/>
