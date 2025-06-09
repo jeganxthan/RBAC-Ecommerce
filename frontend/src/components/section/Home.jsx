@@ -3,8 +3,6 @@ import { gsap } from 'gsap'
 import Login from '../Auth/Login'
 import Signup from '../Auth/Signup'
 import illustration from '../../assets/illustration.svg'
-import logo from '../../assets/logoremove.png'
-
 const Home = () => {
   const [currentPage, setCurrentPage] = useState('login')
 

@@ -4,7 +4,7 @@ import ProfilePhoto from '../Inputs/ProfilePhoto'
 import { validateEmail } from '../../utils/helper'
 import axiosInstance from '../../utils/axiosInstance'
 import { API_PATHS } from '../../utils/apipaths'
-import { UserContext } from '../../context/UserContext'
+import { UserContext } from '../../context/UserProvider'
 import { useNavigate } from 'react-router-dom'
 import uploadImages from '../../utils/uploadImages'
 const Signup = ({ setCurrentPage }) => {

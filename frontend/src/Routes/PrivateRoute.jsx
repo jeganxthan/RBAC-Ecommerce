@@ -1,12 +1,12 @@
 import { Navigate, Outlet } from 'react-router-dom'
 import { useContext } from 'react'
-import { UserContext } from '../context/UserContext'
+import { UserContext } from '../context/UserProvider'
 
 const PrivateRoute = ({ allowedRoles }) => {
-  const { user } = useContext(UserContext)
+  const { loading } = useContext(UserContext)
 
-  if (!user || !allowedRoles.includes(user.role)) {
-    return <Navigate to="/" replace />
+  if (loading) {
+    return <div>Loading...</div>;
   }
 
   return <Outlet />

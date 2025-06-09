@@ -3,7 +3,7 @@ import Input from '../Inputs/Input'
 import { validateEmail } from '../../utils/helper'
 import axiosInstance from '../../utils/axiosInstance'
 import { API_PATHS } from '../../utils/apipaths'
-import { UserContext } from '../../context/UserContext'
+import { UserContext } from '../../context/UserProvider'
 import { useNavigate } from 'react-router-dom'
 const Login = ({ setCurrentPage }) => {
   const [email, setEmail] = useState("")
@@ -26,6 +26,7 @@ const Login = ({ setCurrentPage }) => {
         email,
         password
       })
+      await updateUser(response.data);
       const { token, role } = response.data;
       if (token) {
         localStorage.setItem("token", token);
@@ -37,7 +38,6 @@ const Login = ({ setCurrentPage }) => {
           navigate("/users/")
         }
       }
-      updateUser(response.data);
     } catch (error) {
       if (error.response && error.response.data?.message) {
         setError(error.response.data.message);

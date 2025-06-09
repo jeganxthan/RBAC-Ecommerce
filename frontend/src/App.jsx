@@ -1,13 +1,14 @@
 import React from 'react'
 import Home from './components/section/Home'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import UserProvider from './context/UserContext'
+import UserProvider from './context/UserProvider'
 import PrivateRoute from './Routes/PrivateRoute'
 import AdminDashboard from './Pages/Admin/AdminDashboard'
 import SellerDashboard from './Pages/Seller/SellerDashboard'
 import UserPage from './Pages/User/UserPage'
 
 const App = () => {
+  
   return (
     <UserProvider>
       <Router>
