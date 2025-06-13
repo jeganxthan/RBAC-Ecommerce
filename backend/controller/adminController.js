@@ -191,53 +191,64 @@ const unblockUser = async (req, res) => {
 };
 
 const getDashboardStats = async (req, res) => {
-    try {
-        const [sellerCount, userCount, adminCount, totalProduct] = await Promise.all([
-            User.countDocuments({ role: "seller" }),
-            User.countDocuments({ role: "member" }),
-            User.countDocuments({ role: "admin" }),
-            Product.countDocuments({})
-        ]);
-        const allCategories = ['Electronics', 'Furniture', 'Clothing', 'Books', 'Beauty', 'Home Appliances', 'Toys', 'Sports', 'Other'];
+  try {
+    const [sellerCount, userCount, adminCount, totalProduct] = await Promise.all([
+      User.countDocuments({ role: "seller" }),
+      User.countDocuments({ role: "member" }),
+      User.countDocuments({ role: "admin" }),
+      Product.countDocuments({})
+    ]);
 
-        const categoryCounts = await Product.aggregate([
-            {
-                $group: {
-                    _id: "$category",
-                    count: { $sum: 1 }
-                }
-            },
-            {
-                $project: {
-                    category: "$_id",
-                    count: 1,
-                    _id: 0
-                }
-            }
-        ]);
+    const allCategories = [
+      'Electronics', 'Furniture', 'Clothing', 'Books',
+      'Beauty', 'Home Appliances', 'Toys', 'Sports', 'Other'
+    ];
 
-        const countsMap = {};
-        categoryCounts.forEach(cat => {
-            countsMap[cat.category] = cat.count;
-        });
+    const categoryCounts = await Product.aggregate([
+      { $match: { category: { $exists: true, $ne: null } } },
+      {
+        $group: {
+          _id: "$category",
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $project: {
+          category: "$_id",
+          count: 1,
+          _id: 0
+        }
+      }
+    ]);
 
-        const categoryProductCount = allCategories.map(cat => ({
-            category: cat,
-            count: countsMap[cat] || 0
-        }));
-
-        res.status(200).json({
-            sellerCount,
-            userCount,
-            adminCount,
-            totalProduct,
-            categoryProductCount,
-        });
-    } catch (error) {
-        res.status(500).json({ message: 'Server error', error: error.message })
-
+    const countsMap = {};
+    if (Array.isArray(categoryCounts)) {
+      categoryCounts.forEach(cat => {
+        countsMap[cat.category] = cat.count;
+      });
     }
+
+    const categoryProductCount = allCategories.map(cat => ({
+      category: cat,
+      count: countsMap[cat] || 0
+    }));
+
+    res.status(200).json({
+      sellerCount,
+      userCount,
+      adminCount,
+      totalProduct,
+      categoryProductCount,
+    });
+  } catch (error) {
+    console.error("Dashboard Stats Error:", error);
+    res.status(500).json({
+      message: 'Server error',
+      error: error.message
+    });
+  }
 };
+
 
 module.exports = {
     getAllSeller,

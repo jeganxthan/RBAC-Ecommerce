@@ -18,7 +18,7 @@ export const API_PATHS = {
   },
   ADMIN: {
     GET_ALL_SELLER: "/api/admin/seller",
-    GET_SELLER: (sellerId) => `/api/admin/${sellerId}`,            
+    GET_SELLER: (sellerId) => `/api/admin/${sellerId}`,      
     BLOCK: (sellerId) => `/api/admin/seller/block/${sellerId}`,    
     UNBLOCK: (sellerId) => `/api/admin/seller/unblock/${sellerId}`,
 

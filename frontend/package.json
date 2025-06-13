@@ -13,11 +13,13 @@
     "axios": "^1.9.0",
     "gasp": "^0.0.2",
     "gsap": "^3.13.0",
+    "lazy": "^1.0.11",
     "lucide-react": "^0.513.0",
     "moment": "^2.30.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-router-dom": "^7.6.2"
+    "react-router-dom": "^7.6.2",
+    "styled-components": "^6.1.18"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
