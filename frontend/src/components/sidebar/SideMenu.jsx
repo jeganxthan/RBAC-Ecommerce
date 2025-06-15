@@ -10,11 +10,10 @@ import { useNavigate } from 'react-router-dom';
 import defaultProfile from '../../assets/defaultProfile.jpg';
 
 const SideMenu = ({ activeMenu }) => {
-  const { user, loading } = useContext(UserContext);
+  const { user} = useContext(UserContext);
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
-  if (loading) return <div>Loading user data...</div>;
   if (!user) return <div>Please log in to see the menu.</div>;
 
   let menuItems = [];
@@ -81,7 +80,7 @@ const SideMenu = ({ activeMenu }) => {
 
             <div className='mb-4 flex justify-center flex-col items-center'>
               <img
-                src={user.profilePicture || defaultProfile}
+                src={user.profileImageUrl || defaultProfile}
                 alt="User Profile" className='rounded-full w-[100px] h-[100px]'
               />
 

@@ -32,11 +32,11 @@ export const API_PATHS = {
     ADMIN_DASHBOARD: "/api/admin/",
   },
   SELLER: {
-    SELLER_DASHBOARD: "/api/seller/dashboard",
-    GET_ALL_PRODUCT: "/api/seller/",
-    GET_PRODUCT: (sellerId) => `/api/seller/${sellerId}`,          
-    CREATE_PRODUCT: "/api/seller/",
-    UPDATE_PRODUCT: (productId) => `/api/seller/${productId}`,     
-    DELETE_PRODUCT: (productId) => `/api/seller/${productId}`,     
+    SELLER_DASHBOARD: "/api/product/dashboard",
+    GET_ALL_PRODUCT: "/api/product/",
+    GET_PRODUCT: (sellerId) => `/api/product/${sellerId}`,          
+    CREATE_PRODUCT: "/api/product/",
+    UPDATE_PRODUCT: (productId) => `/api/product/${productId}`,     
+    DELETE_PRODUCT: (productId) => `/api/product/${productId}`,     
   }
 };

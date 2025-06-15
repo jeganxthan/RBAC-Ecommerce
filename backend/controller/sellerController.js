@@ -21,38 +21,47 @@ const getProduct = async (req, res) => {
 };
 
 const createProduct = async (req, res) => {
+  try {
+    const {
+      name,
+      price,
+      description,
+      specs,
+      category,
+      stock,
+    } = req.body;
+
+    let parsedSpecs = [];
+
     try {
-        const {
-            name,
-            price,
-            description,
-            specs,
-            category,
-            stock
-        } = req.body;
-
-        const images = req.files ? req.files.map(file => `/uploads/products/${file.filename}`) : [];
-
-        if (!name || !price) {
-            return res.status(400).json({ message: "Name and price are required" });
-        }
-
-        const product = await Product.create({
-            seller: new mongoose.Types.ObjectId(req.user._id),
-            name,
-            price,
-            images,
-            description,
-            specs,
-            category,
-            stock
-        });
-
-        res.status(201).json({ message: "Product Created Successfully", product });
-    } catch (error) {
-        res.status(500).json({ message: 'Server error', error: error.message });
+      parsedSpecs = specs ? JSON.parse(specs) : [];
+    } catch (err) {
+      return res.status(400).json({ success: false, message: "Invalid specs format" });
     }
+
+    const images = req.files ? req.files.map(file => `/uploads/products/${file.filename}`) : [];
+
+    if (!name || !price) {
+      return res.status(400).json({ message: "Name and price are required" });
+    }
+
+    const product = await Product.create({
+      seller: new mongoose.Types.ObjectId(req.user._id),
+      name,
+      price,
+      images,
+      description,
+      specs: parsedSpecs,
+      category,
+      stock,
+    });
+
+    res.status(201).json({ success: true, message: "Product Created Successfully", product });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
 };
+
 
 const updateProduct = async (req, res) => {
     try {
