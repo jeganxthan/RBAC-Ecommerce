@@ -17,7 +17,7 @@ export const SIDE_MENU_DATA = [
         id:"03",
         label:"Seller-product",
         icon:Speaker,
-        path:"/admin/seller-product"
+        path:"/admin/seller-products"
     },
     {
         id:"04",
@@ -42,7 +42,7 @@ export const SIDE_MENU_USER_DATA = [
     },
     {
         id:"02",
-        label:"My Tasks",
+        label:"Products",
         icon:Paperclip,
         path:"/user/task"
     },
@@ -56,15 +56,15 @@ export const SIDE_MENU_USER_DATA = [
 export const SIDE_MENU_SELLER_DATA = [
     {
         id:"01",
-        label:"Team Members",
+        label:"DashBoard",
         icon:Group,
-        path:"/user/dashboard"
+        path:"/seller/dashboard"
     },
     {
         id:"02",
-        label:"My Tasks",
+        label:"Products",
         icon:Paperclip,
-        path:"/user/task"
+        path:"/seller/products"
     },
     {
         id:"03",

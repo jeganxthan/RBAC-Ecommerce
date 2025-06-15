@@ -27,7 +27,7 @@ const AdminDashboard = () => {
     getDashboardData();
   }, []);
 
-  if (!dashboardData) return null; // Render nothing until data is ready
+  if (!dashboardData) return null; 
 
   const totalUsers =
     dashboardData.sellerCount +
