@@ -112,10 +112,6 @@ const SellerProduct = () => {
         }
         await createProduct();
     };
-
-    const getDataDetailsById = async () => { };
-
-    const deleteproduct = async () => { };
     return (
         <div>
             <SideMenu activeMenu={location.pathname} />
