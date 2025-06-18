@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 
 const getAllProduct = async (req, res) => {
     try {
-        const products = await Product.find();
+         const sellerId = new mongoose.Types.ObjectId(req.user._id);
+        const products = await Product.find({ seller: sellerId });
         res.json(products);
     } catch (error) {
         res.status(500).json({ message: 'Server error', error: error.message });

@@ -1,17 +1,19 @@
 import React, { useContext, useState } from 'react';
 import { UserContext } from '../../context/UserProvider';
 import { Menu, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import LogoutModal from '../../Pages/Seller/Modal/LogoutModal'; 
+import defaultProfile from '../../assets/defaultProfile.jpg';
 import {
   SIDE_MENU_DATA,
   SIDE_MENU_USER_DATA,
   SIDE_MENU_SELLER_DATA,
 } from '../../utils/data';
-import { useNavigate } from 'react-router-dom';
-import defaultProfile from '../../assets/defaultProfile.jpg';
 
 const SideMenu = ({ activeMenu }) => {
-  const { user} = useContext(UserContext);
+  const { user, clearUser } = useContext(UserContext);
   const [open, setOpen] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const navigate = useNavigate();
 
   if (!user) return <div>Please log in to see the menu.</div>;
@@ -33,18 +35,29 @@ const SideMenu = ({ activeMenu }) => {
 
   const handleItemClick = (path) => {
     if (path === 'logout') {
-      console.log('Logging out...');
+      setShowLogoutModal(true);
     } else {
       navigate(path);
+      setOpen(false);
     }
+  };
+
+  const confirmLogout = () => {
+    clearUser();
+    setShowLogoutModal(false);
     setOpen(false);
+    navigate('/');
+  };
+
+  const cancelLogout = () => {
+    setShowLogoutModal(false);
   };
 
   return (
     <div>
       {!open && (
         <div className="fixed top-0 left-0 h-full md:w-16 w-10 bg-white shadow-md z-30 flex flex-col items-center py-4">
-          <button onClick={() => setOpen(true)} aria-label='Open menu'>
+          <button onClick={() => setOpen(true)} aria-label="Open menu">
             <Menu size={24} />
           </button>
           <div className="mt-6 flex flex-col gap-6">
@@ -54,7 +67,9 @@ const SideMenu = ({ activeMenu }) => {
               return (
                 <div
                   key={item.label}
-                  className={`cursor-pointer ${isActive ? 'text-[#1977a8]' : 'text-black hover:text-[#1977a8]'}`}
+                  className={`cursor-pointer ${
+                    isActive ? 'text-[#1977a8]' : 'text-black hover:text-[#1977a8]'
+                  }`}
                   onClick={() => handleItemClick(item.path)}
                   title={item.label}
                 >
@@ -68,24 +83,28 @@ const SideMenu = ({ activeMenu }) => {
 
       {open && (
         <>
-          <div className='fixed inset-0 bg-black opacity-40 z-40' onClick={() => setOpen(false)}></div>
+          <div
+            className="fixed inset-0 bg-black opacity-40 z-40"
+            onClick={() => setOpen(false)}
+          ></div>
 
-          <div className='fixed top-0 left-0 w-64 h-full bg-white z-50 shadow-lg p-4'>
-            <div className='flex justify-between items-center mb-4'>
-              <h1 className='text-lg font-semibold'>Menu</h1>
-              <button onClick={() => setOpen(false)} aria-label='Close menu'>
+          <div className="fixed top-0 left-0 w-64 h-full bg-white z-50 shadow-lg p-4">
+            <div className="flex justify-between items-center mb-4">
+              <h1 className="text-lg font-semibold">Menu</h1>
+              <button onClick={() => setOpen(false)} aria-label="Close menu">
                 <X size={24} />
               </button>
             </div>
 
-            <div className='mb-4 flex justify-center flex-col items-center'>
+            <div className="mb-4 flex justify-center flex-col items-center">
               <img
                 src={user.profileImageUrl || defaultProfile}
-                alt="User Profile" className='rounded-full w-[100px] h-[100px]'
+                alt="User Profile"
+                className="rounded-full w-[100px] h-[100px]"
               />
 
-              <p className='font-bold capitalize'>{user.name}</p>
-              <p className='text-sm bg-[#1977a8] text-white p-1 rounded-md'>{user.role}</p>
+              <p className="font-bold capitalize">{user.name}</p>
+              <p className="text-sm bg-[#1977a8] text-white p-1 rounded-md">{user.role}</p>
             </div>
 
             <ul>
@@ -100,7 +119,9 @@ const SideMenu = ({ activeMenu }) => {
                   ${isActive ? 'text-[#1977a8] font-semibold' : 'text-black hover:bg-gray-200'}`}
                     onClick={() => handleItemClick(item.path)}
                   >
-                    {Icon && <Icon size={20} className={isActive ? 'text-[#1977a8]' : 'text-black'} />}
+                    {Icon && (
+                      <Icon size={20} className={isActive ? 'text-[#1977a8]' : 'text-black'} />
+                    )}
                     <span>{item.label}</span>
                   </li>
                 );
@@ -109,9 +130,14 @@ const SideMenu = ({ activeMenu }) => {
           </div>
         </>
       )}
+
+      <LogoutModal
+        isOpen={showLogoutModal}
+        onConfirm={confirmLogout}
+        onCancel={cancelLogout}
+      />
     </div>
   );
-
 };
 
 export default SideMenu;

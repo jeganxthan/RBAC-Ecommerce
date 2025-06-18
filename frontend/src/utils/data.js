@@ -12,21 +12,14 @@ export const SIDE_MENU_DATA = [
         label:"Seller",
         icon:User,
         path:"/admin/seller"
-    },
-    {
-        id:"03",
-        label:"Seller-product",
+    },{
+        id:"02",
+        label:"Products",
         icon:Speaker,
         path:"/admin/seller-products"
     },
     {
-        id:"04",
-        label:"Product",
-        icon:Group,
-        path:"/admin/product"
-    },
-    {
-        id:"05",
+        id:"03",
         label:"Logout",
         icon:LogOut,
         path:"logout"

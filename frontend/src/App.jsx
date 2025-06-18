@@ -8,7 +8,8 @@ import AdminLogout from './Pages/Admin/AdminLogout';
 import SellerProduct from './Pages/Seller/SellerProduct';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-// Lazy load pages
+import ProductDetails from './Pages/Seller/Product/ProductDetails';
+import ProductAdmin from './Pages/Admin/product/ProductAdmin'
 const Home = lazy(() => import('./components/section/Home'));
 const AdminDashboard = lazy(() => import('./Pages/Admin/AdminDashboard'));
 const AdminSeller = lazy(() => import('./Pages/Admin/AdminSeller'));
@@ -38,6 +39,7 @@ const App = () => {
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
               <Route path="/admin/seller" element={<AdminSeller />} />
               <Route path="/admin/seller-products" element={<AdminProducts />} />
+              <Route path="/admin/product/:productId" element={<ProductAdmin/>} />
               <Route path="/admin/logout" element={<AdminLogout />} />
             </Route>
 
@@ -45,6 +47,7 @@ const App = () => {
             <Route element={<PrivateRoute allowedRoles={['seller']} />}>
               <Route path="/seller/dashboard" element={<SellerDashboard />} />
               <Route path="/seller/products" element={<SellerProduct />} />
+              <Route path="/seller/product/:productId" element={<ProductDetails/>} />
             </Route>
 
             {/* user protected route */}
