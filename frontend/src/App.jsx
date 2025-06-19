@@ -10,6 +10,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ProductDetails from './Pages/Seller/Product/ProductDetails';
 import ProductAdmin from './Pages/Admin/product/ProductAdmin'
+import SearchEngine from './Pages/User/backend/search/SearchEngine';
 const Home = lazy(() => import('./components/section/Home'));
 const AdminDashboard = lazy(() => import('./Pages/Admin/AdminDashboard'));
 const AdminSeller = lazy(() => import('./Pages/Admin/AdminSeller'));
@@ -53,6 +54,7 @@ const App = () => {
             {/* user protected route */}
             <Route element={<PrivateRoute allowedRoles={['user']} />}>
               <Route path="/users" element={<UserPage />} />
+              <Route path="/search" element={<SearchEngine />} />
             </Route>
           </Routes>
         </Suspense>

@@ -6,13 +6,22 @@ const getAllProduct = async (req, res) => {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 10;
         const skip = (page - 1) * limit;
-        const totalProducts = await Product.countDocuments();
+        const search = req.query.search || '';
 
-        const products = await Product.find()
+        const query = {};
+        if (search) {
+            query.$or = [
+                { name: { $regex: search, $options: 'i' } }, // case-insensitive
+                { description: { $regex: search, $options: 'i' } }
+            ];
+        }
+
+        const totalProducts = await Product.countDocuments(query);
+
+        const products = await Product.find(query)
             .populate('seller', 'name email profileImageUrl')
             .skip(skip)
             .limit(limit);
-
 
         res.status(200).json({
             page,
@@ -23,10 +32,9 @@ const getAllProduct = async (req, res) => {
         });
 
     } catch (error) {
-        res.status(500).json({ message: 'Server error', error: error.message })
-
+        res.status(500).json({ message: 'Server error', error: error.message });
     }
-}
+};
 
 const getProduct = async (req, res) => {
     try {

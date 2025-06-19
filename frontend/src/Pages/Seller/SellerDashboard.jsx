@@ -130,11 +130,12 @@ const SellerDashboard = () => {
             <p>No products found.</p>
           ) : (
             productData.map((product) => (
-              <div key={product._id} className="flex flex-col items-center card hover:scale-95" onClick={()=>navigate(`/seller/product/${product._id}`)}>
+              <div key={product._id} className="flex flex-col items-center card hover:scale-95">
                 <img
                   src={`${BASE_URL}${product.images?.[0]}`}
                   alt={product.name}
                   className="h-40 object-cover rounded-md mb-4"
+                  onClick={()=>navigate(`/seller/product/${product._id}`)}
                 />
                 <h3 className="text-lg font-semibold mb-1">{product.name}</h3>
                 <p className="text-gray-500 mb-2">{product.category}</p>

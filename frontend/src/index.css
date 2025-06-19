@@ -1,11 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Michroma&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
-  font-family: 'Urbanist', sans-serif;
+  font-family: 'Urbanist', 'Michroma', sans-serif;
 }
+
 
 .card {
   @apply bg-white p-6 rounded-lg shadow-lg flex flex-col items-center w-full;

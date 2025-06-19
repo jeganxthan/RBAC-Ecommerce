@@ -41,7 +41,7 @@ const AdminProducts = () => {
                                 alt={product.name} className="h-40 object-cover rounded-md mb-4 "/>
                             <p><strong>Name:</strong> {product.name}</p>
                             <p><strong>Price:</strong> ${product.price}</p>
-                            <p><strong>Description:</strong> {product.description}</p>
+                            <p class="line-clamp-2"><strong>Description:</strong> {product.description}</p>
                         </div>
                     ))}
                 </div>

@@ -61,7 +61,7 @@ const ProductDetails = () => {
                   className="w-[1000px] h-[500px] object-cover rounded-md shadow-md mb-4 transition duration-300 ease-in-out"
                 />
       
-                <div className="flex gap-4">
+                <div className="flex gap-4 w-[600px]">
                   <button
                     onClick={handlePreviousImage}
                     className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded transition duration-200"
