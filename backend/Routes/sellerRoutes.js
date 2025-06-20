@@ -17,7 +17,6 @@ router.get("/dashboard", protect, sellerOnly, getDashboard);
 
 router.get("/", protect, getAllProduct);                
 router.get("/:id", protect, getProduct);                
-
 router.post("/", protect, sellerOnly, productUpload.array("images", 5), createProduct);
 router.put("/:id", protect, sellerOnly, productUpload.array("images", 5), updateProduct); 
 

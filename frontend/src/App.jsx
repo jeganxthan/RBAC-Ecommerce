@@ -11,6 +11,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import ProductDetails from './Pages/Seller/Product/ProductDetails';
 import ProductAdmin from './Pages/Admin/product/ProductAdmin'
 import SearchEngine from './Pages/User/backend/search/SearchEngine';
+import SearchResults from './Pages/User/backend/search/SearchResults';
+import GetProduct from './Pages/User/backend/search/GetProduct';
 const Home = lazy(() => import('./components/section/Home'));
 const AdminDashboard = lazy(() => import('./Pages/Admin/AdminDashboard'));
 const AdminSeller = lazy(() => import('./Pages/Admin/AdminSeller'));
@@ -55,6 +57,8 @@ const App = () => {
             <Route element={<PrivateRoute allowedRoles={['user']} />}>
               <Route path="/users" element={<UserPage />} />
               <Route path="/search" element={<SearchEngine />} />
+              <Route path="/search-results" element={<SearchResults />} />
+              <Route path="/product/:productId" element={<GetProduct />} />
             </Route>
           </Routes>
         </Suspense>

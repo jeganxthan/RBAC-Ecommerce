@@ -11,7 +11,7 @@ const getAllProduct = async (req, res) => {
         const query = {};
         if (search) {
             query.$or = [
-                { name: { $regex: search, $options: 'i' } }, // case-insensitive
+                { name: { $regex: search, $options: 'i' } }, 
                 { description: { $regex: search, $options: 'i' } }
             ];
         }
@@ -57,6 +57,21 @@ const getUserProfile = async (req, res) => {
         res.status(500).json({ message: "Server error", error: error.message });
     }
 };
+const getProductSuggestions = async (req, res) => {
+    try {
+        const search = req.query.query || '';
+        if (!search) return res.status(200).json([]);
+
+        const suggestions = await Product.find({
+            name: { $regex: search, $options: 'i' }
+        }).select('name').limit(10);
+
+        res.status(200).json(suggestions.map(product => product.name));
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
+
 const updateUserProfile = async (req, res) => {
     try {
         const user = await User.findById(req.user._id);
@@ -99,6 +114,17 @@ const getCart = async (req, res) => {
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
+const getCartCount = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const count = user.cart.length;
+    res.status(200).json({ totalCartCount: count });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
 
 const removeFromCart = async (req, res) => {
     try {
@@ -122,4 +148,6 @@ module.exports = {
     addToCart,
     getCart,
     removeFromCart,
+    getProductSuggestions,
+    getCartCount
 };

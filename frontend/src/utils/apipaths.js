@@ -10,8 +10,9 @@ export const API_PATHS = {
   USERS: {
     GET_ALL_USER_PRODUCT: "/api/users/",
     GET_USER_PROFILE: "/api/users/profile",
+    SEARCH_PRODUCT:"/api/users/search",
     GET_CART: "/api/users/getCart",
-    GET_USER_PRODUCT: (userId) => `/api/users/${userId}`,          
+    GET_PRODUCT: (productId) => `/api/users/${productId}`,          
     UPDATE_USER_PROFILE: "/api/users/updateprofile",
     ADD_CART: "/api/users/addcart",
     REMOVE_CART: (productId) => `/api/users/${productId}`,         

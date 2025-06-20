@@ -20,7 +20,6 @@ const getProduct = async (req, res) => {
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
-
 const createProduct = async (req, res) => {
   try {
     const {
@@ -167,6 +166,6 @@ module.exports = {
     createProduct,
     updateProduct,
     deleteProduct,
-    getDashboard
+    getDashboard,
 };
 
