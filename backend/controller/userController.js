@@ -1,6 +1,6 @@
 const User = require("../models/User");
 const Product = require('../models/Product')
-
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const getAllProduct = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
@@ -107,7 +107,7 @@ const addToCart = async (req, res) => {
 const getCart = async (req, res) => {
     try {
         const user = await User.findById(req.user._id)
-            .populate('cart.product', 'name price images stock');
+            .populate('cart.product', 'name price images stock description');
 
         res.status(200).json(user.cart);
     } catch (error) {
@@ -139,6 +139,22 @@ const removeFromCart = async (req, res) => {
     }
 };
 
+const payment = async(req, res)=>{
+    try {
+        const {amount} = req.body;
+        const paymentIntent = await stripe.paymentIntents.create({
+      amount,
+      currency: 'usd',
+    });
+
+    res.send({
+      clientSecret: paymentIntent.client_secret,
+    });
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+};
+
 
 module.exports = {
     getAllProduct,
@@ -149,5 +165,6 @@ module.exports = {
     getCart,
     removeFromCart,
     getProductSuggestions,
-    getCartCount
+    getCartCount,
+    payment
 };

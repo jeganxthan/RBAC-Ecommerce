@@ -3,12 +3,34 @@ import { useNavigate, useParams } from 'react-router-dom'
 import axiosInstance from '../../../../utils/axiosInstance';
 import { API_PATHS, BASE_URL } from '../../../../utils/apipaths';
 import { MoveLeft } from 'lucide-react';
-
+import { toast } from 'react-toastify';
+import { ShoppingCart } from 'lucide-react';
+import BuyModal from './BuyModal'
 const GetProduct = () => {
     const { productId } = useParams();
     const navigate = useNavigate();
     const [product, setProduct] = useState(null);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [addCart, setAddCart] = useState(null);
+    const [quantity, setQuantity] = useState(1);
+    const [showBuyModal, setShowBuyModal] = useState(false);
+    const [selectedAmount, setSelectedAmount] = useState(0);
+    const handleAddToCart = async () => {
+        try {
+            const response = await axiosInstance.post(API_PATHS.USERS.ADD_CART, {
+                productId,
+                quantity
+            })
+            if (response.status == 200) {
+                toast.success('Product added successfully');
+                setAddCart(response.data);
+            } else {
+                toast.error('Error in adding a product');
+            }
+        } catch (error) {
+            console.error('Error Fetching Add to cart');
+        }
+    }
     const fetchDetails = async () => {
         try {
             const response = await axiosInstance.get(API_PATHS.USERS.GET_PRODUCT(productId));
@@ -36,17 +58,26 @@ const GetProduct = () => {
         if (!product?.images) return;
         setCurrentImageIndex((prev) => (prev - 1) % product.images.length) % product.images.length;
     }
+    const handleBuy = (price) => {
+        setSelectedAmount(price * 100);
+        setShowBuyModal(true);
+    }
     if (!product) return <p className="text-center mt-10 text-gray-500">Loading product...</p>;
 
     return (
         <div>
             <div className="max-w-5xl mx-auto p-2 py-10">
-                <button
-                    onClick={() => navigate(-1)}
-                    className="flex items-center text-blue-600 hover:underline mb-6"
-                >
-                    <MoveLeft className="mr-2" /> Back
-                </button>
+                <div className='flex flex-row justify-between'>
+                    <button
+                        onClick={() => navigate(-1)}
+                        className="flex items-center text-blue-600 hover:underline mb-6"
+                    >
+                        <MoveLeft className="mr-2" /> Back
+                    </button>
+                    <button className='text-blue-600 hover:text-blue-900' onClick={() => navigate('/user/cart')}>
+                        <ShoppingCart />
+                    </button>
+                </div>
                 <h1 className="text-3xl font-bold mb-6">{product.name}</h1>
                 {product.images && product.images.length > 0 && (
                     <div className="mb-6 relative">
@@ -99,8 +130,8 @@ const GetProduct = () => {
                     )}
                 </div>
                 <div className='flex flex-row justify-between gap-[70px] text-base'>
-                <button className='rounded-md p-2 bg-yellow-400 w-full hover:bg-yellow-700'>Buy Now</button>
-                <button className='hover:bg-yellow-700 rounded-md bg-yellow-400 w-full p-2'>Add To Cart</button>
+                    <button className='rounded-md p-2 bg-yellow-400 w-full hover:bg-yellow-700' onClick={() => handleBuy(product.price)}>Buy Now</button>
+                    <button className='hover:bg-yellow-700 rounded-md bg-yellow-400 w-full p-2' onClick={handleAddToCart}>Add To Cart</button>
 
                 </div>
             </div>
@@ -112,6 +143,12 @@ const GetProduct = () => {
                         <p className="text-sm text-gray-500">{product.seller.email}</p>
                     </div>
                 </div>
+            )}
+            {showBuyModal && (
+                <BuyModal
+                    amount={selectedAmount}
+                    onClose={() => setShowBuyModal(false)}
+                />
             )}
         </div>
     )

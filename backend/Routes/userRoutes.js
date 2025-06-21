@@ -8,7 +8,8 @@ const { getAllProduct,
     getCart,
     removeFromCart,
     getProductSuggestions,
-    getCartCount } = require("../controller/userController");
+    getCartCount, 
+    payment} = require("../controller/userController");
 
 const router = express.Router();
 
@@ -19,6 +20,7 @@ router.get('/cartcount', protect, getCartCount);
 router.get('/search', getProductSuggestions);
 router.put('/updateprofile', protect, updateUserProfile);
 router.post('/addcart', protect, addToCart);
+router.post('/payment', protect, payment);
 router.delete('/cart/:productId', protect, removeFromCart);
 router.get('/:id', protect, getProduct);
 module.exports = router;

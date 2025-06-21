@@ -12,10 +12,12 @@ export const API_PATHS = {
     GET_USER_PROFILE: "/api/users/profile",
     SEARCH_PRODUCT:"/api/users/search",
     GET_CART: "/api/users/getCart",
+    GET_CART_COUNT:"/api/users/cartcount",
     GET_PRODUCT: (productId) => `/api/users/${productId}`,          
     UPDATE_USER_PROFILE: "/api/users/updateprofile",
     ADD_CART: "/api/users/addcart",
-    REMOVE_CART: (productId) => `/api/users/${productId}`,         
+    PAYMENT: "/api/users/payment",
+    REMOVE_CART: (productId) => `/api/users/cart/${productId}`,         
   },
   ADMIN: {
     GET_ALL_SELLER: "/api/admin/seller",
