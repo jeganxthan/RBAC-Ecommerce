@@ -16,10 +16,10 @@ const {productUpload}  = require("../middleware/uploadMiddleware");
 router.get("/dashboard", protect, sellerOnly, getDashboard); 
 
 router.get("/", protect, getAllProduct);                
-router.get("/:id", protect, getProduct);                
 router.post("/", protect, sellerOnly, productUpload.array("images", 5), createProduct);
-router.put("/:id", protect, sellerOnly, productUpload.array("images", 5), updateProduct); 
 
+router.get("/:id", protect, getProduct);                
+router.put("/:id", protect, sellerOnly, productUpload.array("images", 5), updateProduct); 
 router.delete("/:id", protect, sellerOnly, deleteProduct); 
 
 module.exports = router;
