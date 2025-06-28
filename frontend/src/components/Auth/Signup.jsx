@@ -97,7 +97,14 @@ const Signup = ({ setCurrentPage }) => {
                 </label>
                 {error && <p className='text-red-500 text-sm'>{error}</p>}
 
-                <button type="submit" className='bg-[#1947a8] w-full p-2 hover:bg-[#638ee8] text-white' type='submit'>SignUp</button>
+                <button
+  className='bg-[#1947a8] w-full p-2 hover:bg-[#638ee8] text-white disabled:opacity-50'
+  type='submit'
+  disabled={loading}
+>
+  {loading ? "Signing up..." : "SignUp"}
+</button>
+
                 <p>Already have an account{" "}
                     <button className='text-violet-950 underline' onClick={() => setCurrentPage('login')} type='button'>
                         Login
