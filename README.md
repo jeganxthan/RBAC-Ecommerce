@@ -68,7 +68,7 @@ User: Register normally (no checkbox or token required).
 Seller: Register with the "Want a Seller Account" checkbox checked.
 
 Admin: Register using the token: 123456
-
+```bash
 RBAC-Ecommerce/
 │
 ├── backend/        # Express.js backend with routes, controllers, models
@@ -76,7 +76,7 @@ RBAC-Ecommerce/
 ├── frontend/       # Vite + React + Tailwind CSS frontend
 │
 └── README.md
-
+```
 ###🧠 Features
 🔒 Role-based protected routes (Admin, Seller, User)
 
